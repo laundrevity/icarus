@@ -11,19 +11,6 @@
 (setv api-url "https://api.openai.com/v1/chat/completions")
 (setv model "gpt-4o-mini")  ; Retained as per your specification
 
-; Define function to read contents of files
-(defn read-files [file-list]
-  (setv file-contents [])
-  (for [filename file-list]
-    (try
-      (with [f (open filename "r")]
-        (setv content (. f read))
-        (setv file-text f"```{filename}\n{content}\n```")
-        (.append file-contents file-text))
-      (except [e (Exception)]
-        (print f"Error reading {filename}: {e}"))))
-  (str/join "\n\n" file-contents))
-
 ; Define an asynchronous function to send requests to OpenAI
 (defn/a make-request [prompt]
   (with/a [session (ClientSession)]  ; Create an aiohttp session
